@@ -48,4 +48,4 @@ my_drivers = [team1_driver1, team3_driver1, team3_driver2, team4_driver1, team9_
 budget = 105.0
 
 # True or False do you have a wildcard available
-wildcard = True
+wildcard = False
