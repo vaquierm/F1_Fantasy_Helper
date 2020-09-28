@@ -90,124 +90,132 @@ if __name__ == '__main__':
     optimal_team = None
     optimal_drivers = None
     optimal_expectation = 0
-    for d in range(len(drivers)):
-        if drivers[d].price >= 20:
-            continue
+    for d1 in range(len(drivers)):
+        for d2 in range(len(drivers) if not wildcard else 1):
+            if drivers[d1].price >= 20:
+                continue
 
-        # Set this driver as the turbo driver
-        drivers[d].turbo_driver = True
+            # Set this driver as the turbo driver
+            drivers[d1].turbo_driver = True
 
-        solver = pywraplp.Solver.CreateSolver("F1 Fantasy solver", "CBC")
+            # give the other driver a free substitution
+            sub = drivers[d2].substitute
+            drivers[d2].substitute = False
 
-        # Declare all model variables
-        driver_vars = []
-        team_vars = []
+            solver = pywraplp.Solver.CreateSolver("F1 Fantasy solver", "CBC")
 
-        team1_var = solver.IntVar(0, 1, team1.name)
-        team1_driver1_var = solver.IntVar(0, 1, team1_driver1.name)
-        team1_driver2_var = solver.IntVar(0, 1, team1_driver2.name)
-        team_vars.append(team1_var)
-        driver_vars.append(team1_driver1_var)
-        driver_vars.append(team1_driver2_var)
+            # Declare all model variables
+            driver_vars = []
+            team_vars = []
 
-        team2_var = solver.IntVar(0, 1, team2.name)
-        team2_driver1_var = solver.IntVar(0, 1, team2_driver1.name)
-        team2_driver2_var = solver.IntVar(0, 1, team2_driver2.name)
-        team_vars.append(team2_var)
-        driver_vars.append(team2_driver1_var)
-        driver_vars.append(team2_driver2_var)
+            team1_var = solver.IntVar(0, 1, team1.name)
+            team1_driver1_var = solver.IntVar(0, 1, team1_driver1.name)
+            team1_driver2_var = solver.IntVar(0, 1, team1_driver2.name)
+            team_vars.append(team1_var)
+            driver_vars.append(team1_driver1_var)
+            driver_vars.append(team1_driver2_var)
 
-        team3_var = solver.IntVar(0, 1, team3.name)
-        team3_driver1_var = solver.IntVar(0, 1, team3_driver1.name)
-        team3_driver2_var = solver.IntVar(0, 1, team3_driver2.name)
-        team_vars.append(team3_var)
-        driver_vars.append(team3_driver1_var)
-        driver_vars.append(team3_driver2_var)
+            team2_var = solver.IntVar(0, 1, team2.name)
+            team2_driver1_var = solver.IntVar(0, 1, team2_driver1.name)
+            team2_driver2_var = solver.IntVar(0, 1, team2_driver2.name)
+            team_vars.append(team2_var)
+            driver_vars.append(team2_driver1_var)
+            driver_vars.append(team2_driver2_var)
 
-        team4_var = solver.IntVar(0, 1, team4.name)
-        team4_driver1_var = solver.IntVar(0, 1, team4_driver1.name)
-        team4_driver2_var = solver.IntVar(0, 1, team4_driver2.name)
-        team_vars.append(team4_var)
-        driver_vars.append(team4_driver1_var)
-        driver_vars.append(team4_driver2_var)
+            team3_var = solver.IntVar(0, 1, team3.name)
+            team3_driver1_var = solver.IntVar(0, 1, team3_driver1.name)
+            team3_driver2_var = solver.IntVar(0, 1, team3_driver2.name)
+            team_vars.append(team3_var)
+            driver_vars.append(team3_driver1_var)
+            driver_vars.append(team3_driver2_var)
 
-        team5_var = solver.IntVar(0, 1, team5.name)
-        team5_driver1_var = solver.IntVar(0, 1, team5_driver1.name)
-        team5_driver2_var = solver.IntVar(0, 1, team5_driver2.name)
-        team_vars.append(team5_var)
-        driver_vars.append(team5_driver1_var)
-        driver_vars.append(team5_driver2_var)
+            team4_var = solver.IntVar(0, 1, team4.name)
+            team4_driver1_var = solver.IntVar(0, 1, team4_driver1.name)
+            team4_driver2_var = solver.IntVar(0, 1, team4_driver2.name)
+            team_vars.append(team4_var)
+            driver_vars.append(team4_driver1_var)
+            driver_vars.append(team4_driver2_var)
 
-        team6_var = solver.IntVar(0, 1, team6.name)
-        team6_driver1_var = solver.IntVar(0, 1, team6_driver1.name)
-        team6_driver2_var = solver.IntVar(0, 1, team6_driver2.name)
-        team_vars.append(team6_var)
-        driver_vars.append(team6_driver1_var)
-        driver_vars.append(team6_driver2_var)
+            team5_var = solver.IntVar(0, 1, team5.name)
+            team5_driver1_var = solver.IntVar(0, 1, team5_driver1.name)
+            team5_driver2_var = solver.IntVar(0, 1, team5_driver2.name)
+            team_vars.append(team5_var)
+            driver_vars.append(team5_driver1_var)
+            driver_vars.append(team5_driver2_var)
 
-        team7_var = solver.IntVar(0, 1, team7.name)
-        team7_driver1_var = solver.IntVar(0, 1, team7_driver1.name)
-        team7_driver2_var = solver.IntVar(0, 1, team7_driver2.name)
-        team_vars.append(team7_var)
-        driver_vars.append(team7_driver1_var)
-        driver_vars.append(team7_driver2_var)
+            team6_var = solver.IntVar(0, 1, team6.name)
+            team6_driver1_var = solver.IntVar(0, 1, team6_driver1.name)
+            team6_driver2_var = solver.IntVar(0, 1, team6_driver2.name)
+            team_vars.append(team6_var)
+            driver_vars.append(team6_driver1_var)
+            driver_vars.append(team6_driver2_var)
 
-        team8_var = solver.IntVar(0, 1, team8.name)
-        team8_driver1_var = solver.IntVar(0, 1, team8_driver1.name)
-        team8_driver2_var = solver.IntVar(0, 1, team8_driver2.name)
-        team_vars.append(team8_var)
-        driver_vars.append(team8_driver1_var)
-        driver_vars.append(team8_driver2_var)
+            team7_var = solver.IntVar(0, 1, team7.name)
+            team7_driver1_var = solver.IntVar(0, 1, team7_driver1.name)
+            team7_driver2_var = solver.IntVar(0, 1, team7_driver2.name)
+            team_vars.append(team7_var)
+            driver_vars.append(team7_driver1_var)
+            driver_vars.append(team7_driver2_var)
 
-        team9_var = solver.IntVar(0, 1, team9.name)
-        team9_driver1_var = solver.IntVar(0, 1, team9_driver1.name)
-        team9_driver2_var = solver.IntVar(0, 1, team9_driver2.name)
-        team_vars.append(team9_var)
-        driver_vars.append(team9_driver1_var)
-        driver_vars.append(team9_driver2_var)
+            team8_var = solver.IntVar(0, 1, team8.name)
+            team8_driver1_var = solver.IntVar(0, 1, team8_driver1.name)
+            team8_driver2_var = solver.IntVar(0, 1, team8_driver2.name)
+            team_vars.append(team8_var)
+            driver_vars.append(team8_driver1_var)
+            driver_vars.append(team8_driver2_var)
 
-        team10_var = solver.IntVar(0, 1, team10.name)
-        team10_driver1_var = solver.IntVar(0, 1, team10_driver1.name)
-        team10_driver2_var = solver.IntVar(0, 1, team10_driver2.name)
-        team_vars.append(team10_var)
-        driver_vars.append(team10_driver1_var)
-        driver_vars.append(team10_driver2_var)
+            team9_var = solver.IntVar(0, 1, team9.name)
+            team9_driver1_var = solver.IntVar(0, 1, team9_driver1.name)
+            team9_driver2_var = solver.IntVar(0, 1, team9_driver2.name)
+            team_vars.append(team9_var)
+            driver_vars.append(team9_driver1_var)
+            driver_vars.append(team9_driver2_var)
 
-        # Limit the number of drivers that can be picked
-        solver.Add(team1_driver1_var + team1_driver2_var + team2_driver1_var + team2_driver2_var + team3_driver1_var + team3_driver2_var + team4_driver1_var + team4_driver2_var + team5_driver1_var + team5_driver2_var + team6_driver1_var + team6_driver2_var + team7_driver1_var + team7_driver2_var + team8_driver1_var + team8_driver2_var + team9_driver1_var + team9_driver2_var + team10_driver1_var + team10_driver2_var == n_drivers)
+            team10_var = solver.IntVar(0, 1, team10.name)
+            team10_driver1_var = solver.IntVar(0, 1, team10_driver1.name)
+            team10_driver2_var = solver.IntVar(0, 1, team10_driver2.name)
+            team_vars.append(team10_var)
+            driver_vars.append(team10_driver1_var)
+            driver_vars.append(team10_driver2_var)
 
-        # Limit the number of teams that can be picked
-        solver.Add(team1_var + team2_var + team3_var + team4_var + team5_var + team6_var + team7_var + team8_var + team9_var + team10_var == n_teams)
+            # Limit the number of drivers that can be picked
+            solver.Add(team1_driver1_var + team1_driver2_var + team2_driver1_var + team2_driver2_var + team3_driver1_var + team3_driver2_var + team4_driver1_var + team4_driver2_var + team5_driver1_var + team5_driver2_var + team6_driver1_var + team6_driver2_var + team7_driver1_var + team7_driver2_var + team8_driver1_var + team8_driver2_var + team9_driver1_var + team9_driver2_var + team10_driver1_var + team10_driver2_var == n_drivers)
 
-        # Limit the budget
-        solver.Add(team1_driver1_var * team1_driver1.price + team1_driver2_var * team1_driver2.price + team2_driver1_var * team2_driver1.price + team2_driver2_var * team2_driver2.price + team3_driver1_var * team3_driver1.price + team3_driver2_var * team3_driver2.price + team4_driver1_var * team4_driver1.price + team4_driver2_var * team4_driver2.price + team5_driver1_var * team5_driver1.price + team5_driver2_var * team5_driver2.price + team6_driver1_var * team6_driver1.price + team6_driver2_var * team6_driver2.price + team7_driver1_var * team7_driver1.price + team7_driver2_var * team7_driver2.price + team8_driver1_var * team8_driver1.price + team8_driver2_var * team8_driver2.price + team9_driver1_var * team9_driver1.price + team9_driver2_var * team9_driver2.price + team10_driver1_var * team10_driver1.price + team10_driver2_var * team10_driver2.price + team1_var * team1.price + team2_var * team2.price + team3_var * team3.price + team4_var * team4.price + team5_var * team5.price + team6_var * team6.price + team7_var * team7.price + team8_var * team8.price + team9_var * team9.price + team10_var * team10.price <= budget)
+            # Limit the number of teams that can be picked
+            solver.Add(team1_var + team2_var + team3_var + team4_var + team5_var + team6_var + team7_var + team8_var + team9_var + team10_var == n_teams)
 
-        # Define the max function
-        solver.Maximize(team1_driver1_var * team1_driver1.get_expected_points() + team1_driver2_var * team1_driver2.get_expected_points() + team2_driver1_var * team2_driver1.get_expected_points() + team2_driver2_var * team2_driver2.get_expected_points() + team3_driver1_var * team3_driver1.get_expected_points() + team3_driver2_var * team3_driver2.get_expected_points() + team4_driver1_var * team4_driver1.get_expected_points() + team4_driver2_var * team4_driver2.get_expected_points() + team5_driver1_var * team5_driver1.get_expected_points() + team5_driver2_var * team5_driver2.get_expected_points() + team6_driver1_var * team6_driver1.get_expected_points() + team6_driver2_var * team6_driver2.get_expected_points() + team7_driver1_var * team7_driver1.get_expected_points() + team7_driver2_var * team7_driver2.get_expected_points() + team8_driver1_var * team8_driver1.get_expected_points() + team8_driver2_var * team8_driver2.get_expected_points() + team9_driver1_var * team9_driver1.get_expected_points() + team9_driver2_var * team9_driver2.get_expected_points() + team10_driver1_var * team10_driver1.get_expected_points() + team10_driver2_var * team10_driver2.get_expected_points() + team1_var * team1.get_expected_points() + team2_var * team2.get_expected_points() + team3_var * team3.get_expected_points() + team4_var * team4.get_expected_points() + team5_var * team5.get_expected_points() + team6_var * team6.get_expected_points() + team7_var * team7.get_expected_points() + team8_var * team8.get_expected_points() + team9_var * team9.get_expected_points() + team10_var * team10.get_expected_points())
+            # Limit the budget
+            solver.Add(team1_driver1_var * team1_driver1.price + team1_driver2_var * team1_driver2.price + team2_driver1_var * team2_driver1.price + team2_driver2_var * team2_driver2.price + team3_driver1_var * team3_driver1.price + team3_driver2_var * team3_driver2.price + team4_driver1_var * team4_driver1.price + team4_driver2_var * team4_driver2.price + team5_driver1_var * team5_driver1.price + team5_driver2_var * team5_driver2.price + team6_driver1_var * team6_driver1.price + team6_driver2_var * team6_driver2.price + team7_driver1_var * team7_driver1.price + team7_driver2_var * team7_driver2.price + team8_driver1_var * team8_driver1.price + team8_driver2_var * team8_driver2.price + team9_driver1_var * team9_driver1.price + team9_driver2_var * team9_driver2.price + team10_driver1_var * team10_driver1.price + team10_driver2_var * team10_driver2.price + team1_var * team1.price + team2_var * team2.price + team3_var * team3.price + team4_var * team4.price + team5_var * team5.price + team6_var * team6.price + team7_var * team7.price + team8_var * team8.price + team9_var * team9.price + team10_var * team10.price <= budget)
 
-        # Solve the system
-        status = solver.Solve()
+            # Define the max function
+            solver.Maximize(team1_driver1_var * team1_driver1.get_expected_points() + team1_driver2_var * team1_driver2.get_expected_points() + team2_driver1_var * team2_driver1.get_expected_points() + team2_driver2_var * team2_driver2.get_expected_points() + team3_driver1_var * team3_driver1.get_expected_points() + team3_driver2_var * team3_driver2.get_expected_points() + team4_driver1_var * team4_driver1.get_expected_points() + team4_driver2_var * team4_driver2.get_expected_points() + team5_driver1_var * team5_driver1.get_expected_points() + team5_driver2_var * team5_driver2.get_expected_points() + team6_driver1_var * team6_driver1.get_expected_points() + team6_driver2_var * team6_driver2.get_expected_points() + team7_driver1_var * team7_driver1.get_expected_points() + team7_driver2_var * team7_driver2.get_expected_points() + team8_driver1_var * team8_driver1.get_expected_points() + team8_driver2_var * team8_driver2.get_expected_points() + team9_driver1_var * team9_driver1.get_expected_points() + team9_driver2_var * team9_driver2.get_expected_points() + team10_driver1_var * team10_driver1.get_expected_points() + team10_driver2_var * team10_driver2.get_expected_points() + team1_var * team1.get_expected_points() + team2_var * team2.get_expected_points() + team3_var * team3.get_expected_points() + team4_var * team4.get_expected_points() + team5_var * team5.get_expected_points() + team6_var * team6.get_expected_points() + team7_var * team7.get_expected_points() + team8_var * team8.get_expected_points() + team9_var * team9.get_expected_points() + team10_var * team10.get_expected_points())
 
-        optimal_team_t = None
-        optimal_drivers_t = []
-        expected_points = 0
-        if status == pywraplp.Solver.OPTIMAL:
-            for i in range(len(team_vars)):
-                if team_vars[i].solution_value() == 1:
-                    optimal_team_t = copy.deepcopy(teams[i])
-                    expected_points += optimal_team_t.get_expected_points()
-            for i in range(len(driver_vars)):
-                if driver_vars[i].solution_value() == 1:
-                    optimal_drivers_t.append(copy.deepcopy(drivers[i]))
-                    expected_points += drivers[i].get_expected_points()
+            # Solve the system
+            status = solver.Solve()
 
-            if expected_points > optimal_expectation:
-                optimal_expectation = expected_points
-                optimal_team = optimal_team_t
-                optimal_drivers = optimal_drivers_t
+            optimal_team_t = None
+            optimal_drivers_t = []
+            expected_points = 0
+            if status == pywraplp.Solver.OPTIMAL:
+                for i in range(len(team_vars)):
+                    if team_vars[i].solution_value() == 1:
+                        optimal_team_t = copy.deepcopy(teams[i])
+                        expected_points += optimal_team_t.get_expected_points()
+                for i in range(len(driver_vars)):
+                    if driver_vars[i].solution_value() == 1:
+                        optimal_drivers_t.append(copy.deepcopy(drivers[i]))
+                        expected_points += drivers[i].get_expected_points()
 
-        # Remove the drivers turbo driver
-        drivers[d].turbo_driver = False
+                if expected_points > optimal_expectation:
+                    optimal_expectation = expected_points
+                    optimal_team = optimal_team_t
+                    optimal_drivers = optimal_drivers_t
+
+            # Remove the drivers turbo driver
+            drivers[d1].turbo_driver = False
+
+            # Reset the free substitution
+            drivers[d2].substitute = sub
 
     print("OPTIMAL EXPECTATION " + ("WITH" if wildcard else "WITHOUT") + " WILDCARD")
     print_team_expectation(optimal_team, optimal_drivers)
