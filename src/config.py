@@ -1,9 +1,5 @@
 from src.variable import Variable
 
-budget = 105
-n_drivers = 5
-n_teams = 1
-
 team1 = Variable(name="Mercedes", points=644, price=32.3, top10_qualy=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1], top10_finish=[1, 1, 1, 0, 1, 1, 1, 1, 1, 1], streak_length=3)
 team1_driver1 = Variable(name="Hamilton", points=414, price=31.4, top10_qualy=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1], top10_finish=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1], streak_length=5)
 team1_driver2 = Variable(name="Botas", points=315, price=29.4, top10_qualy=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1], top10_finish=[1, 1, 1, 0, 1, 1, 1, 1, 1, 1], streak_length=5)
@@ -44,5 +40,12 @@ team10 = Variable(name="Williams", points=97, price=6.3, top10_qualy=[0, 0, 0, 0
 team10_driver1 = Variable(name="Russel", points=46, price=5.9, top10_qualy=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], top10_finish=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], streak_length=5)
 team10_driver2 = Variable(name="Latifi", points=56, price=6.6, top10_qualy=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], top10_finish=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], streak_length=5)
 
+# INPUT YOUR CURRENT TEAM AND DRIVERS HERE
 my_team = team1
 my_drivers = [team1_driver1, team3_driver1, team3_driver2, team4_driver1, team9_driver1]
+
+# INPUT YOUR TOTAL BUDGET HERE
+budget = 105.0
+
+# True or False do you have a wildcard available
+wildcard = True
