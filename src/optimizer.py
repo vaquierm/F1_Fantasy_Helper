@@ -36,6 +36,12 @@ def print_team_expectation(team_t, drivers_d):
     print("TEAM : " + team_t.name)
     print("\tprice : " + str(team_t.price))
     print("\texpected points : " + str(round(team_t.get_expected_points(), 2)))
+    if team_t.substitute:
+        print("\tSubstitute penalty of 10 points")
+    if team_t.qualy_bonus:
+        print("\tQualifying top 10 bonus with " + str(round(team_t.qualy_top10_ratio, 2)) + " probability")
+    if team_t.finish_bonus:
+        print("\tFinish top 10 bonus with " + str(round(team_t.finish_top10_ratio, 2)) + " probability")
     for i in range(len(drivers_d)):
         cost += drivers_d[i].price
         expected_points += drivers_d[i].get_expected_points()
