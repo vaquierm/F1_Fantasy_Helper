@@ -121,7 +121,7 @@ if __name__ == '__main__':
     solver.Add(team1_driver1_var * team1_driver1.price + team1_driver2_var * team1_driver2.price + team2_driver1_var * team2_driver1.price + team2_driver2_var * team2_driver2.price + team3_driver1_var * team3_driver1.price + team3_driver2_var * team3_driver2.price + team4_driver1_var * team4_driver1.price + team4_driver2_var * team4_driver2.price + team5_driver1_var * team5_driver1.price + team5_driver2_var * team5_driver2.price + team6_driver1_var * team6_driver1.price + team6_driver2_var * team6_driver2.price + team7_driver1_var * team7_driver1.price + team7_driver2_var * team7_driver2.price + team8_driver1_var * team8_driver1.price + team8_driver2_var * team8_driver2.price + team9_driver1_var * team9_driver1.price + team9_driver2_var * team9_driver2.price + team10_driver1_var * team10_driver1.price + team10_driver2_var * team10_driver2.price + team1_var * team1.price + team2_var * team2.price + team3_var * team3.price + team4_var * team4.price + team5_var * team5.price + team6_var * team6.price + team7_var * team7.price + team8_var * team8.price + team9_var * team9.price + team10_var * team10.price <= budget)
 
     # Define the max function
-    solver.Maximize(team1_driver1_var * team1_driver1.points + team1_driver2_var * team1_driver2.points + team2_driver1_var * team2_driver1.points + team2_driver2_var * team2_driver2.points + team3_driver1_var * team3_driver1.points + team3_driver2_var * team3_driver2.points + team4_driver1_var * team4_driver1.points + team4_driver2_var * team4_driver2.points + team5_driver1_var * team5_driver1.points + team5_driver2_var * team5_driver2.points + team6_driver1_var * team6_driver1.points + team6_driver2_var * team6_driver2.points + team7_driver1_var * team7_driver1.points + team7_driver2_var * team7_driver2.points + team8_driver1_var * team8_driver1.points + team8_driver2_var * team8_driver2.points + team9_driver1_var * team9_driver1.points + team9_driver2_var * team9_driver2.points + team10_driver1_var * team10_driver1.points + team10_driver2_var * team10_driver2.points + team1_var * team1.points + team2_var * team2.points + team3_var * team3.points + team4_var * team4.points + team5_var * team5.points + team6_var * team6.points + team7_var * team7.points + team8_var * team8.points + team9_var * team9.points + team10_var * team10.points)
+    solver.Maximize(team1_driver1_var * team1_driver1.get_expected_points() + team1_driver2_var * team1_driver2.get_expected_points() + team2_driver1_var * team2_driver1.get_expected_points() + team2_driver2_var * team2_driver2.get_expected_points() + team3_driver1_var * team3_driver1.get_expected_points() + team3_driver2_var * team3_driver2.get_expected_points() + team4_driver1_var * team4_driver1.get_expected_points() + team4_driver2_var * team4_driver2.get_expected_points() + team5_driver1_var * team5_driver1.get_expected_points() + team5_driver2_var * team5_driver2.get_expected_points() + team6_driver1_var * team6_driver1.get_expected_points() + team6_driver2_var * team6_driver2.get_expected_points() + team7_driver1_var * team7_driver1.get_expected_points() + team7_driver2_var * team7_driver2.get_expected_points() + team8_driver1_var * team8_driver1.get_expected_points() + team8_driver2_var * team8_driver2.get_expected_points() + team9_driver1_var * team9_driver1.get_expected_points() + team9_driver2_var * team9_driver2.get_expected_points() + team10_driver1_var * team10_driver1.get_expected_points() + team10_driver2_var * team10_driver2.get_expected_points() + team1_var * team1.get_expected_points() + team2_var * team2.get_expected_points() + team3_var * team3.get_expected_points() + team4_var * team4.get_expected_points() + team5_var * team5.get_expected_points() + team6_var * team6.get_expected_points() + team7_var * team7.get_expected_points() + team8_var * team8.get_expected_points() + team9_var * team9.get_expected_points() + team10_var * team10.get_expected_points())
 
     # Solve the system
     status = solver.Solve()
@@ -152,21 +152,18 @@ if __name__ == '__main__':
                 print("___________________________\n")
                 print("TEAM : " + teams[i].name)
                 print("\tprice  : " + str(teams[i].price))
-                print("\tpoints : " + str(teams[i].points))
-                print("\tppm    : " + str(round(teams[i].points / teams[i].price, 2)) + "\n")
+                print("\texpected points : " + str(round(teams[i].get_expected_points(), 2)))
                 total_cost += teams[i].price
         for i in range(len(driver_vars)):
             if driver_vars[i].solution_value() == 1:
                 print("___________________________\n")
                 print("DRIVER : " + drivers[i].name)
                 print("\tprice  : " + str(drivers[i].price))
-                print("\tpoints : " + str(drivers[i].points))
-                print("\tppm    : " + str(round(drivers[i].points / drivers[i].price, 2)) + "\n")
+                print("\texpected points : " + str(round(drivers[i].get_expected_points(), 2)))
                 total_cost += drivers[i].price
         print("___________________________\n\n")
         print("Budget: " + str(budget))
         print("Total cost: " + str(round(total_cost)))
-        print("Total points: " + str(round(total_points)))
-        print("ppm: " + str(round(total_points / total_cost, 2)))
+        print("Total expected points: " + str(round(total_points, 2)))
     else:
         print("The problem does not have an optimal solution...")
