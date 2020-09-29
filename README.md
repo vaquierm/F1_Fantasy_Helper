@@ -18,7 +18,7 @@ Here is an example team
 
 ### 💨 Turbo Driver
 
-Each week, you can select one driver below the price of 20m to be your Turbo Driver (TD). The points that this driver will earn will be doubled for this raceweek. This card can be moved to any of your drivers for free each week. However, if the driver does not finish the race and loses points, the lost points are also doubled which is a risk to think about.
+Each week, you can select **one** driver below the price of 20m to be your Turbo Driver (TD). The points that this driver will earn will be doubled for this raceweek. This card can be moved to any of your drivers for free each week. However, if the driver does not finish the race and loses points, the lost points are also doubled which is a risk to think about.
 
 ### ♻ Substitutions
 
@@ -78,5 +78,37 @@ Race Finish Bonuses:
 
 These streaks are very important to think about when substituing drivers. If a driver that is not in the players team is about to reach both the qualifying and race finish streaks, it might be worth it to pay a substitution penalty of 10 points to get this driver onto the team. This way, with the TD card, this driver could potentially rack up an additional 30 points on top of the regular points that it will get from the regular scoring. In the above picture, we can see that Riccardo is about to reach both streaks (indicated by the Q and R counters where he has 4/5). Riccardo has been pretty concistant in finishing in the top 10 and will likely achieve the streak. This is a good trade, which also has potential to increase your total budget as many people will want hin on their team, his price is likely to increase lots this raceweek.
 
+## How the Helper Program Works
 
+The helper program does not use any fancy machine learning to try to predict the outcome of the next race. There simply isnt enough data to do so! Furthermore, the situations in which a driver does not finish the race are very unpredictable. For example, the driver could be mixed up in a crash that was not their fault at all, their car could have encountered mechanical problems, etc... Data from previous years is also not the most reliable as the drivers could have been driving for a different team or a different car from the same team which has a huge impact on their performance.
+
+Instead, what the program does is that it uses the data accumulated in the season so far and makes the ***assumption*** that the drivers will continue to perform similarly on average. It performs a ***fancy*** version of the knapsack problem that maximixes their expected points that they will score next race, with the player's total budget as the limiting factor.
+
+The program takes into account the drivers that you currently have in your team. This way even if other drivers are very attractive and could increase your expected points for the next race, it takes into account that the player might need to pay som substitution penalties and gives the best course of action based on all information.
+
+### Expected Points for the next race
+
+````
+expected_points = (total_points_scored - points_from_streaks) / number_of_races
+
+if (about_to_win_qualy_streak)
+    expected_points += (number_races_qualified_top10 / number_of_races) * 5
+    
+if (about_to_win_finish_streak)
+    expected_points += (number_races_finish_top10 / number_of_races) * 5
+    
+if (turbo_driver)
+    expected_points *= 2
+    
+if (substitution)
+    expected_points - 10
+````
+
+1. We first calculate average of points that the driver scores each race ommiting all points that come from streak bonuses
+2. If the driver is about to score a qualifying streak, we add 5 points weighed by the percentage of races where they made top 10 in qualifying
+3. If the driver is about to score a race finish streak, we add 10 points weighed by the percentage of races where they made top 10
+4. If the driver was selected as the turbo driver, its points are doubled
+5. If the driver was a non free substitution, the penalty of 10 points applied
+
+# Example
 
