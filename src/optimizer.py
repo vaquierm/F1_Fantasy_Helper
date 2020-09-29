@@ -5,7 +5,6 @@ from ortools.linear_solver import pywraplp
 
 teams = [team1, team2, team3, team4, team5, team6, team7, team8, team9, team10]
 drivers = [team1_driver1, team1_driver2, team2_driver1, team2_driver2, team3_driver1, team3_driver2, team4_driver1, team4_driver2, team5_driver1, team5_driver2, team6_driver1, team6_driver2, team7_driver1, team7_driver2, team8_driver1, team8_driver2, team9_driver1, team9_driver2, team10_driver1, team10_driver2]
-
 n_teams = 1
 n_drivers = 5
 
@@ -29,6 +28,13 @@ def print_all_drivers():
     print("___________________________\n\n\n\n")
 
 
+def contains(name, drivers):
+    for driver in drivers:
+        if driver.name == name:
+            return True
+    return False
+
+
 def print_team_expectation(team_t, drivers_d):
     cost = team_t.price
     expected_points = team_t.get_expected_points()
@@ -38,6 +44,8 @@ def print_team_expectation(team_t, drivers_d):
     print("\texpected points : " + str(round(team_t.get_expected_points(), 2)))
     if team_t.substitute:
         print("\tSubstitute penalty of 10 points")
+    elif team_t.name != my_team.name:
+        print("\tFree substitution")
     if team_t.qualy_bonus:
         print("\tQualifying top 10 bonus with " + str(round(team_t.qualy_top10_ratio, 2)) + " probability")
     if team_t.finish_bonus:
@@ -53,6 +61,8 @@ def print_team_expectation(team_t, drivers_d):
             print("\tUse turbo driver card")
         if drivers_d[i].substitute:
             print("\tSubstitute penalty of 10 points")
+        elif not contains(drivers_d[i].name, my_drivers):
+            print("\tFree substitution")
         if drivers_d[i].qualy_bonus:
             print("\tQualifying top 10 bonus with " + str(round(drivers_d[i].qualy_top10_ratio, 2)) + " probability")
         if drivers_d[i].finish_bonus:
