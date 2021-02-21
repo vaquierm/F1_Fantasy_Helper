@@ -1,5 +1,5 @@
-from src.config import *
-from src.variable import best_for_turbo_driver
+from src.season2020.config import *
+from src.season2020.variable import best_for_turbo_driver
 import copy
 from ortools.linear_solver import pywraplp
 
