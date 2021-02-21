@@ -1,5 +1,7 @@
 from src.season2021.variable import Team, Driver
 
+GPs = ["Bahrain"]
+
 # -------------- Mercedes --------------
 team1_driver1 = Driver(name="Hamilton",
                        start_point_expectation=40.82,
@@ -199,3 +201,39 @@ team10 = Team(name="Haas",
               points=[],
               driver1=team10_driver1,
               driver2=team10_driver2)
+
+driver_map = {
+    team1_driver1.name: team1_driver1,
+    team1_driver2.name: team1_driver2,
+    team2_driver1.name: team2_driver1,
+    team2_driver2.name: team2_driver2,
+    team3_driver1.name: team3_driver1,
+    team3_driver2.name: team3_driver2,
+    team4_driver1.name: team4_driver1,
+    team4_driver2.name: team4_driver2,
+    team5_driver1.name: team5_driver1,
+    team5_driver2.name: team5_driver2,
+    team6_driver1.name: team6_driver1,
+    team6_driver2.name: team6_driver2,
+    team7_driver1.name: team7_driver1,
+    team7_driver2.name: team7_driver2,
+    team8_driver1.name: team8_driver1,
+    team8_driver2.name: team8_driver2,
+    team9_driver1.name: team9_driver1,
+    team9_driver2.name: team9_driver2,
+    team10_driver1.name: team10_driver1,
+    team10_driver2.name: team10_driver2,
+}
+
+team_map = {
+    team1.name: team1,
+    team2.name: team2,
+    team3.name: team3,
+    team4.name: team4,
+    team5.name: team5,
+    team6.name: team6,
+    team7.name: team7,
+    team8.name: team8,
+    team9.name: team9,
+    team10.name: team10,
+}

@@ -38,7 +38,7 @@ class Variable:
             if top10_qualy[i] == 1:
                 qualy_consecutive += 1
                 if qualy_consecutive == self.streak_length:
-                    race_i_expected_points += 5
+                    race_i_expected_points += 5 * qualy_steak_prob
                     # Remove from the points array to get the raw number of points
                     self.points[i] -= 5
                     qualy_consecutive = 0
@@ -47,7 +47,7 @@ class Variable:
             if top10_race[i] == 10:
                 finish_consecutive += 1
                 if finish_consecutive == self.streak_length:
-                    race_i_expected_points += 10
+                    race_i_expected_points += 10 * race_steak_prob
                     # Remove from the points array to get the raw number of points
                     self.points -= 10
                     finish_consecutive = 0
@@ -63,17 +63,17 @@ class Variable:
 
     def get_points(self, GP_number):
         if GP_number >= self.N_GP:
-            raise Exception("No points data for GP number " + GP_number)
+            raise Exception("No points data for GP number " + str(GP_number))
         return self.points[GP_number]
 
     def get_expected_points(self, GP_number):
         if GP_number > self.N_GP:
-            raise Exception("Cannot predict points for GP number " + GP_number)
+            raise Exception("Cannot predict points for GP number " + str(GP_number))
         return self.expected_points[GP_number]
 
     def get_price(self, GP_number):
-        if GP_number >= self.N_GP:
-            raise Exception("No price data for GP number " + GP_number)
+        if GP_number > self.N_GP:
+            raise Exception("No price data for GP number " + str(GP_number))
         return self.prices[GP_number]
 
 
