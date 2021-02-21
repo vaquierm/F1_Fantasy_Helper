@@ -26,22 +26,22 @@ class FantasyTeam:
         team_str += "\n" + indent_str + "GP: " + GPs[self.GP_number]
         team_str += "\n" + indent_str + "Team: " + self.team.name
         team_str += "\n" + indent_str + "\tPrice: " + str(self.team.get_price(self.GP_number))
-        team_str += "\n" + indent_str + "\tExpected Points: " + str(self.team.get_expected_points(self.GP_number))
+        team_str += "\n" + indent_str + "\tExpected Points: " + str(round(self.team.get_expected_points(self.GP_number), 2))
         if self.GP_number < self.team.N_GP:
-            team_str += "\n" + indent_str + "\tActual Points: " + str(self.team.get_points(self.GP_number))
+            team_str += "\n" + indent_str + "\tActual Points: " + str(round(self.team.get_points(self.GP_number), 2))
         for i in range(len(self.drivers)):
             team_str += "\n" + indent_str + "Driver " + str(i + 1) + ": " + self.drivers[i].name
             team_str += "\n" + indent_str + "\tPrice: " + str(self.drivers[i].get_price(self.GP_number))
-            team_str += "\n" + indent_str + "\tExpected Points: " + str(self.drivers[i].get_expected_points(self.GP_number))
+            team_str += "\n" + indent_str + "\tExpected Points: " + str(round(self.drivers[i].get_expected_points(self.GP_number), 2))
             if self.GP_number < self.team.N_GP:
-                team_str += "\n" + indent_str + "\tActual Points: " + str(self.drivers[i].get_points(self.GP_number))
+                team_str += "\n" + indent_str + "\tActual Points: " + str(round(self.drivers[i].get_points(self.GP_number), 2))
         if self.subs > 3:
             team_str += "\n" + indent_str + str(self.subs - 3) + "0 points penalty for " + str(self.subs) + " substitutions"
-        team_str += "\n" + indent_str + "Total Team Price: " + str(self.get_price())
+        team_str += "\n" + indent_str + "Total Team Price: " + str(round(self.get_price(), 1))
         team_str += "\n" + indent_str + "Total Budget: " + str(self.budget)
-        team_str += "\n" + indent_str + "Total Expected Points: " + str(self.get_expected_points()) + " with turbo-driver " + self.best_expected_turbo_driver().name
+        team_str += "\n" + indent_str + "Total Expected Points: " + str(round(self.get_expected_points(), 2)) + " with turbo-driver " + self.best_expected_turbo_driver().name
         if self.GP_number < self.team.N_GP:
-            team_str += "\n" + indent_str + "Total Actual Points: " + str(self.get_points()) + " with turbo-driver " + self.best_turbo_driver().name
+            team_str += "\n" + indent_str + "Total Actual Points: " + str(round(self.get_points(), 2)) + " with turbo-driver " + self.best_turbo_driver().name
 
         return team_str
 

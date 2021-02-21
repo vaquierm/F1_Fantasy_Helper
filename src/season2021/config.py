@@ -70,7 +70,7 @@ team4_driver1 = Driver(name="Leclerc",
                        race_positions=[],
                        qualy_positions=[])
 team4_driver2 = Driver(name="Sainz",
-                       start_point_expectation=15.88,
+                       start_point_expectation=12.0,
                        prices=[14.4],
                        points=[],
                        race_positions=[],

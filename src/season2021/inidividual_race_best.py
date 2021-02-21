@@ -6,4 +6,4 @@ if __name__ == '__main__':
     GP = "Bahrain"
     best_team = get_best_team(budget=budget, GP_number=GPs.index(GP), expectation=True)
 
-    print(best_team.to_string(1))
+    print(best_team.to_string())
