@@ -7,7 +7,7 @@ if __name__ == '__main__':
     # The target GP
     GP = "Bahrain"
     # Expectation or actual results
-    expectation = False
+    expectation = True
     # Names of drivers and constructors to absolutely include/exclude
     include = []
     exclude = []

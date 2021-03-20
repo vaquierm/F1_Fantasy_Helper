@@ -6,7 +6,7 @@ GPs = ["Bahrain", "Italy"]
 team1_driver1 = Driver(name="Hamilton",
                        start_point_expectation=40.82,
                        prices=[33.5, 33.5],
-                       points=[33],
+                       points=[39],
                        race_positions=[1],
                        qualy_positions=[1])
 team1_driver2 = Driver(name="Bottas",
@@ -18,7 +18,7 @@ team1_driver2 = Driver(name="Bottas",
 team1 = Team(name="Mercedes",
              start_point_expectation=59.6,
              prices=[38.0, 38.1],
-             points=[34],
+             points=[60],
              driver1=team1_driver1,
              driver2=team1_driver2)
 
@@ -32,13 +32,13 @@ team2_driver1 = Driver(name="Verstappen",
 team2_driver2 = Driver(name="Perez",
                        start_point_expectation=21.5,
                        prices=[18.4, 18.5],
-                       points=[14],
+                       points=[20],
                        race_positions=[4],
                        qualy_positions=[4])
 team2 = Team(name="Red Bull",
              start_point_expectation=48.0,
              prices=[25.9, 25.9],
-             points=[33],
+             points=[48],
              driver1=team2_driver1,
              driver2=team2_driver2)
 
@@ -72,7 +72,7 @@ team4_driver1 = Driver(name="Leclerc",
 team4_driver2 = Driver(name="Sainz",
                        start_point_expectation=12.0,
                        prices=[14.4, 14],
-                       points=[18],
+                       points=[13],
                        race_positions=[7],
                        qualy_positions=[7])
 team4 = Team(name="Ferrari",
@@ -92,13 +92,13 @@ team5_driver1 = Driver(name="Vettel",
 team5_driver2 = Driver(name="Stroll",
                        start_point_expectation=10.53,
                        prices=[13.9, 14],
-                       points=[14],
+                       points=[13],
                        race_positions=[9],
                        qualy_positions=[9])
 team5 = Team(name="Aston Martin",
              start_point_expectation=28.9,
              prices=[17.6, 18],
-             points=[34],
+             points=[27],
              driver1=team5_driver1,
              driver2=team5_driver2)
 
