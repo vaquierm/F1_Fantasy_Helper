@@ -17,7 +17,8 @@ class FantasyTeam:
             raise Exception("You cannot afford this team")
 
         cash = budget - self.get_price_pre_GP()
-        self.budget = self.get_price_at_GP() + cash
+        self.budget_at_GP = self.get_price_at_GP() + cash
+        self.budget_pre_GP = budget
 
         if len(drivers) != 5:
             raise Exception("Fantasy team must be at 5 drivers")
@@ -40,7 +41,8 @@ class FantasyTeam:
         if self.subs > 3:
             team_str += "\n" + indent_str + str(self.subs - 3) + "0 points penalty for " + str(self.subs) + " substitutions"
         team_str += "\n" + indent_str + "Total Team Price: " + str(round(self.get_price_at_GP(), 1))
-        team_str += "\n" + indent_str + "Total Budget: " + str(self.budget)
+        team_str += "\n" + indent_str + "Total Budget Pre GP: " + str(self.budget_pre_GP)
+        team_str += "\n" + indent_str + "Total Budget At GP: " + str(self.budget_at_GP)
         team_str += "\n" + indent_str + "Total Expected Points: " + str(round(self.get_expected_points(), 2)) + " with turbo-driver " + self.best_expected_turbo_driver().name
         if self.GP_number < self.team.N_GP:
             team_str += "\n" + indent_str + "Total Actual Points: " + str(round(self.get_points(), 2)) + " with turbo-driver " + self.best_turbo_driver().name
@@ -92,7 +94,7 @@ class FantasyTeam:
     def get_team_hash(self):
         driver_names = map(lambda driver: driver.name, self.drivers)
         driver_names = sorted(driver_names)
-        return str(self.GP_number + "_" + self.team.name + '_' + '_'.join(driver_names))
+        return str(str(self.GP_number) + "_" + self.team.name + '_' + '_'.join(driver_names))
 
     def get_price_at_GP(self):
         total_price = self.team.get_price(self.GP_number)
@@ -108,8 +110,21 @@ class FantasyTeam:
 
         return total_price
 
-    def get_budget(self):
-        return self.budget
+    def get_budget_at_GP(self):
+        return self.budget_at_GP
+
+    def get_budget_pre_GP(self):
+        return self.budget_pre_GP
+
+
+def get_potential_best_teams_next_GP(current_team: FantasyTeam, expectation: bool = False):
+    potential_teams = [FantasyTeam(current_team.team, current_team.drivers, current_team.get_budget_at_GP(), current_team.GP_number + 1, 0)]
+    for i in range(1, 7):
+        potential_teams.append(get_best_team_next_GP(current_team, expectation, i))
+
+
+
+    return potential_teams
 
 
 def get_best_team_next_GP(current_team: FantasyTeam, expectation: bool = False, subs: int = -1):
@@ -231,7 +246,7 @@ def get_best_team_next_GP(current_team: FantasyTeam, expectation: bool = False, 
 
     # Limit the budget
     GP_number -= 1
-    solver.Add(team1_driver1_var * team1_driver1.get_price(GP_number) + team1_driver2_var * team1_driver2.get_price(GP_number) + team2_driver1_var * team2_driver1.get_price(GP_number) + team2_driver2_var * team2_driver2.get_price(GP_number) + team3_driver1_var * team3_driver1.get_price(GP_number) + team3_driver2_var * team3_driver2.get_price(GP_number) + team4_driver1_var * team4_driver1.get_price(GP_number) + team4_driver2_var * team4_driver2.get_price(GP_number) + team5_driver1_var * team5_driver1.get_price(GP_number) + team5_driver2_var * team5_driver2.get_price(GP_number) + team6_driver1_var * team6_driver1.get_price(GP_number) + team6_driver2_var * team6_driver2.get_price(GP_number) + team7_driver1_var * team7_driver1.get_price(GP_number) + team7_driver2_var * team7_driver2.get_price(GP_number) + team8_driver1_var * team8_driver1.get_price(GP_number) + team8_driver2_var * team8_driver2.get_price(GP_number) + team9_driver1_var * team9_driver1.get_price(GP_number) + team9_driver2_var * team9_driver2.get_price(GP_number) + team10_driver1_var * team10_driver1.get_price(GP_number) + team10_driver2_var * team10_driver2.get_price(GP_number) + team1_var * team1.get_price(GP_number) + team2_var * team2.get_price(GP_number) + team3_var * team3.get_price(GP_number) + team4_var * team4.get_price(GP_number) + team5_var * team5.get_price(GP_number) + team6_var * team6.get_price(GP_number) + team7_var * team7.get_price(GP_number) + team8_var * team8.get_price(GP_number) + team9_var * team9.get_price(GP_number) + team10_var * team10.get_price(GP_number) <= current_team.get_budget())
+    solver.Add(team1_driver1_var * team1_driver1.get_price(GP_number) + team1_driver2_var * team1_driver2.get_price(GP_number) + team2_driver1_var * team2_driver1.get_price(GP_number) + team2_driver2_var * team2_driver2.get_price(GP_number) + team3_driver1_var * team3_driver1.get_price(GP_number) + team3_driver2_var * team3_driver2.get_price(GP_number) + team4_driver1_var * team4_driver1.get_price(GP_number) + team4_driver2_var * team4_driver2.get_price(GP_number) + team5_driver1_var * team5_driver1.get_price(GP_number) + team5_driver2_var * team5_driver2.get_price(GP_number) + team6_driver1_var * team6_driver1.get_price(GP_number) + team6_driver2_var * team6_driver2.get_price(GP_number) + team7_driver1_var * team7_driver1.get_price(GP_number) + team7_driver2_var * team7_driver2.get_price(GP_number) + team8_driver1_var * team8_driver1.get_price(GP_number) + team8_driver2_var * team8_driver2.get_price(GP_number) + team9_driver1_var * team9_driver1.get_price(GP_number) + team9_driver2_var * team9_driver2.get_price(GP_number) + team10_driver1_var * team10_driver1.get_price(GP_number) + team10_driver2_var * team10_driver2.get_price(GP_number) + team1_var * team1.get_price(GP_number) + team2_var * team2.get_price(GP_number) + team3_var * team3.get_price(GP_number) + team4_var * team4.get_price(GP_number) + team5_var * team5.get_price(GP_number) + team6_var * team6.get_price(GP_number) + team7_var * team7.get_price(GP_number) + team8_var * team8.get_price(GP_number) + team9_var * team9.get_price(GP_number) + team10_var * team10.get_price(GP_number) <= current_team.get_budget_at_GP())
     GP_number += 1
 
     # If there is a required number of subs, add the restriction
@@ -291,7 +306,7 @@ def get_best_team_next_GP(current_team: FantasyTeam, expectation: bool = False, 
     else:
         raise Exception("Cannot solve system")
 
-    return FantasyTeam(optimal_team, optimal_drivers, current_team.get_budget(), GP_number, sub_count)
+    return FantasyTeam(optimal_team, optimal_drivers, current_team.get_budget_at_GP(), GP_number, sub_count)
 
 
 def get_best_team_for_GP(budget, GP_number: int, expectation: bool=False, include: list = [], exclude: list = []):
