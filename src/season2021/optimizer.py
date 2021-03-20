@@ -1,6 +1,7 @@
 from src.season2021.config import *
 from src.season2021.variable import Team, Driver
 from ortools.linear_solver import pywraplp
+import numpy as np
 
 all_teams = [team1, team2, team3, team4, team5, team6, team7, team8, team9, team10]
 all_drivers = [team1_driver1, team1_driver2, team2_driver1, team2_driver2, team3_driver1, team3_driver2, team4_driver1, team4_driver2, team5_driver1, team5_driver2, team6_driver1, team6_driver2, team7_driver1, team7_driver2, team8_driver1, team8_driver2, team9_driver1, team9_driver2, team10_driver1, team10_driver2]
@@ -41,8 +42,8 @@ class FantasyTeam:
         if self.subs > 3:
             team_str += "\n" + indent_str + str(self.subs - 3) + "0 points penalty for " + str(self.subs) + " substitutions"
         team_str += "\n" + indent_str + "Total Team Price: " + str(round(self.get_price_at_GP(), 1))
-        team_str += "\n" + indent_str + "Total Budget Pre GP: " + str(self.budget_pre_GP)
-        team_str += "\n" + indent_str + "Total Budget At GP: " + str(self.budget_at_GP)
+        team_str += "\n" + indent_str + "Total Budget Pre GP: " + str(round(self.budget_pre_GP, 1))
+        team_str += "\n" + indent_str + "Total Budget At GP: " + str(round(self.budget_at_GP, 1))
         team_str += "\n" + indent_str + "Total Expected Points: " + str(round(self.get_expected_points(), 2)) + " with turbo-driver " + self.best_expected_turbo_driver().name
         if self.GP_number < self.team.N_GP:
             team_str += "\n" + indent_str + "Total Actual Points: " + str(round(self.get_points(), 2)) + " with turbo-driver " + self.best_turbo_driver().name
@@ -117,17 +118,59 @@ class FantasyTeam:
         return self.budget_pre_GP
 
 
-def get_potential_best_teams_next_GP(current_team: FantasyTeam, expectation: bool = False):
-    potential_teams = [FantasyTeam(current_team.team, current_team.drivers, current_team.get_budget_at_GP(), current_team.GP_number + 1, 0)]
-    for i in range(1, 7):
-        potential_teams.append(get_best_team_next_GP(current_team, expectation, i))
+def get_potential_best_teams_next_GP(current_team: FantasyTeam, include: list = [], exclude: list = []):
+    if len(include) == 0 and len(exclude) == 0:
+        potential_teams = [FantasyTeam(current_team.team, current_team.drivers, current_team.get_budget_at_GP(), current_team.GP_number + 1, 0)]
+    else:
+        potential_teams = []
+    for i in range(1 if len(include) == 0 and len(exclude) == 0 else 0, 7):
+        try:
+            potential_teams.append(__get_best_team_next_GP(current_team, True, i, include, exclude))
+        except:
+            pass
+
+    if (len(potential_teams)) == 0:
+        raise Exception("No teams can satisfy the conditions")
+
+    team_points = np.array(list(map(lambda team: team.get_expected_points(), potential_teams)))
+    std = np.std(team_points)
+    max = np.max(team_points)
+
+    potential_teams_keep = []
+
+    for i in range(len(potential_teams)):
+        if team_points[i] >= max - std:
+            potential_teams_keep.append(potential_teams[i])
+
+    return potential_teams_keep
 
 
+def get_best_teams_next_GP(current_team: FantasyTeam, include: list = [], exclude: list = []):
+    if len(include) == 0 and len(exclude) == 0:
+        potential_teams = [FantasyTeam(current_team.team, current_team.drivers, current_team.get_budget_at_GP(), current_team.GP_number + 1, 0)]
+    else:
+        potential_teams = []
+    for i in range(1 if len(include) == 0 and len(exclude) == 0 else 0, 7):
+        try:
+            potential_teams.append(__get_best_team_next_GP(current_team, False, i, include, exclude))
+        except:
+            pass
 
-    return potential_teams
+    if (len(potential_teams)) == 0:
+        raise Exception("No teams can satisfy the conditions")
+
+    team_points = np.array(list(map(lambda team: team.get_points(), potential_teams)))
+    max = np.max(team_points)
+    max_indexes = np.where(team_points == max)
+
+    max_teams = []
+    for max_index in max_indexes:
+        max_teams.append(potential_teams[max_index[0]])
+
+    return max_teams
 
 
-def get_best_team_next_GP(current_team: FantasyTeam, expectation: bool = False, subs: int = -1):
+def __get_best_team_next_GP(current_team: FantasyTeam, expectation: bool = False, subs: int = -1, include: list = [], exclude: list = []):
     solver = pywraplp.Solver.CreateSolver("F1 Fantasy solver", "CBC")
 
     team_hash = current_team.get_team_hash()
@@ -283,6 +326,128 @@ def get_best_team_next_GP(current_team: FantasyTeam, expectation: bool = False, 
         team10_driver2_sub = 0 if team10_driver2.name in team_hash else 1
         solver.Add(team1_sub * team1_var + team2_sub * team2_var + team3_sub * team3_var + team4_sub * team4_var + team5_sub * team5_var + team6_sub * team6_var + team7_sub * team7_var + team8_sub * team8_var + team9_sub * team9_var + team10_sub * team10_var + team1_driver1_sub * team1_driver1_var + team1_driver2_sub * team1_driver2_var + team2_driver1_sub * team2_driver1_var + team2_driver2_sub * team2_driver2_var + team3_driver1_sub * team3_driver1_var + team3_driver2_sub * team3_driver2_var + team4_driver1_sub * team4_driver1_var + team4_driver2_sub * team4_driver2_var + team5_driver1_sub * team5_driver1_var + team5_driver2_sub * team5_driver2_var + team6_driver1_sub * team6_driver1_var + team6_driver2_sub * team6_driver2_var + team7_driver1_sub * team7_driver1_var + team7_driver2_sub * team7_driver2_var + team8_driver1_sub * team8_driver1_var + team8_driver2_sub * team8_driver2_var + team9_driver1_sub * team9_driver1_var + team9_driver2_sub * team9_driver2_var + team10_driver1_sub * team10_driver1_var + team10_driver2_sub * team10_driver2_var == subs)
 
+    # Include the specific requirements
+    if team1.name in include:
+        solver.Add(team1_var == 1)
+    if team1.name in exclude:
+        solver.Add(team1_var == 0)
+    if team2.name in include:
+        solver.Add(team2_var == 1)
+    if team2.name in exclude:
+        solver.Add(team2_var == 0)
+    if team3.name in include:
+        solver.Add(team3_var == 1)
+    if team3.name in exclude:
+        solver.Add(team3_var == 0)
+    if team4.name in include:
+        solver.Add(team4_var == 1)
+    if team4.name in exclude:
+        solver.Add(team4_var == 0)
+    if team5.name in include:
+        solver.Add(team5_var == 1)
+    if team5.name in exclude:
+        solver.Add(team5_var == 0)
+    if team6.name in include:
+        solver.Add(team6_var == 1)
+    if team6.name in exclude:
+        solver.Add(team6_var == 0)
+    if team7.name in include:
+        solver.Add(team7_var == 1)
+    if team7.name in exclude:
+        solver.Add(team7_var == 0)
+    if team8.name in include:
+        solver.Add(team8_var == 1)
+    if team8.name in exclude:
+        solver.Add(team8_var == 0)
+    if team9.name in include:
+        solver.Add(team9_var == 1)
+    if team9.name in exclude:
+        solver.Add(team9_var == 0)
+    if team10.name in include:
+        solver.Add(team10_var == 1)
+    if team10.name in exclude:
+        solver.Add(team10_var == 0)
+    if team1_driver1.name in include:
+        solver.Add(team1_driver1_var == 1)
+    if team1_driver1.name in exclude:
+        solver.Add(team1_driver1_var == 0)
+    if team2_driver1.name in include:
+        solver.Add(team2_driver1_var == 1)
+    if team2_driver1.name in exclude:
+        solver.Add(team2_driver1_var == 0)
+    if team3_driver1.name in include:
+        solver.Add(team3_driver1_var == 1)
+    if team3_driver1.name in exclude:
+        solver.Add(team3_driver1_var == 0)
+    if team4_driver1.name in include:
+        solver.Add(team4_driver1_var == 1)
+    if team4_driver1.name in exclude:
+        solver.Add(team4_driver1_var == 0)
+    if team5_driver1.name in include:
+        solver.Add(team5_driver1_var == 1)
+    if team5_driver1.name in exclude:
+        solver.Add(team5_driver1_var == 0)
+    if team6_driver1.name in include:
+        solver.Add(team6_driver1_var == 1)
+    if team6_driver1.name in exclude:
+        solver.Add(team6_driver1_var == 0)
+    if team7_driver1.name in include:
+        solver.Add(team7_driver1_var == 1)
+    if team7_driver1.name in exclude:
+        solver.Add(team7_driver1_var == 0)
+    if team8_driver1.name in include:
+        solver.Add(team8_driver1_var == 1)
+    if team8_driver1.name in exclude:
+        solver.Add(team8_driver1_var == 0)
+    if team9_driver1.name in include:
+        solver.Add(team9_driver1_var == 1)
+    if team9_driver1.name in exclude:
+        solver.Add(team9_driver1_var == 0)
+    if team10_driver1.name in include:
+        solver.Add(team10_driver1_var == 1)
+    if team10_driver1.name in exclude:
+        solver.Add(team10_driver1_var == 0)
+    if team1_driver2.name in include:
+        solver.Add(team1_driver2_var == 1)
+    if team1_driver2.name in exclude:
+        solver.Add(team1_driver2_var == 0)
+    if team2_driver2.name in include:
+        solver.Add(team2_driver2_var == 1)
+    if team2_driver2.name in exclude:
+        solver.Add(team2_driver2_var == 0)
+    if team3_driver2.name in include:
+        solver.Add(team3_driver2_var == 1)
+    if team3_driver2.name in exclude:
+        solver.Add(team3_driver2_var == 0)
+    if team4_driver2.name in include:
+        solver.Add(team4_driver2_var == 1)
+    if team4_driver2.name in exclude:
+        solver.Add(team4_driver2_var == 0)
+    if team5_driver2.name in include:
+        solver.Add(team5_driver2_var == 1)
+    if team5_driver2.name in exclude:
+        solver.Add(team5_driver2_var == 0)
+    if team6_driver2.name in include:
+        solver.Add(team6_driver2_var == 1)
+    if team6_driver2.name in exclude:
+        solver.Add(team6_driver2_var == 0)
+    if team7_driver2.name in include:
+        solver.Add(team7_driver2_var == 1)
+    if team7_driver2.name in exclude:
+        solver.Add(team7_driver2_var == 0)
+    if team8_driver2.name in include:
+        solver.Add(team8_driver2_var == 1)
+    if team8_driver2.name in exclude:
+        solver.Add(team8_driver2_var == 0)
+    if team9_driver2.name in include:
+        solver.Add(team9_driver2_var == 1)
+    if team9_driver2.name in exclude:
+        solver.Add(team9_driver2_var == 0)
+    if team10_driver2.name in include:
+        solver.Add(team10_driver2_var == 1)
+    if team10_driver2.name in exclude:
+        solver.Add(team10_driver2_var == 0)
+
     # Define the max function
     solver.Maximize(team1_driver1_var * team1_driver1_points + team1_driver2_var * team1_driver2_points + team2_driver1_var * team2_driver1_points + team2_driver2_var * team2_driver2_points + team3_driver1_var * team3_driver1_points + team3_driver2_var * team3_driver2_points + team4_driver1_var * team4_driver1_points + team4_driver2_var * team4_driver2_points + team5_driver1_var * team5_driver1_points + team5_driver2_var * team5_driver2_points + team6_driver1_var * team6_driver1_points + team6_driver2_var * team6_driver2_points + team7_driver1_var * team7_driver1_points + team7_driver2_var * team7_driver2_points + team8_driver1_var * team8_driver1_points + team8_driver2_var * team8_driver2_points + team9_driver1_var * team9_driver1_points + team9_driver2_var * team9_driver2_points + team10_driver1_var * team10_driver1_points + team10_driver2_var * team10_driver2_points + team1_var * team1_points + team2_var * team2_points + team3_var * team3_points + team4_var * team4_points + team5_var * team5_points + team6_var * team6_points + team7_var * team7_points + team8_var * team8_points + team9_var * team9_points + team10_var * team10_points)
 
@@ -304,12 +469,12 @@ def get_best_team_next_GP(current_team: FantasyTeam, expectation: bool = False, 
                 if all_drivers[i].name not in team_hash:
                     sub_count += 1
     else:
-        raise Exception("Cannot solve system")
+        raise Exception("No teams can satisfy the conditions")
 
     return FantasyTeam(optimal_team, optimal_drivers, current_team.get_budget_at_GP(), GP_number, sub_count)
 
 
-def get_best_team_for_GP(budget, GP_number: int, expectation: bool=False, include: list = [], exclude: list = []):
+def get_best_team_for_GP(budget, GP_number: int, expectation: bool = False, include: list = [], exclude: list = []):
     solver = pywraplp.Solver.CreateSolver("F1 Fantasy solver", "CBC")
 
     # Declare all model variables
