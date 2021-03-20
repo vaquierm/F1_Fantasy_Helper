@@ -74,6 +74,8 @@ class Variable:
     def get_price(self, GP_number):
         if GP_number > self.N_GP:
             raise Exception("No price data for GP number " + str(GP_number))
+        if GP_number < 0:
+            return self.prices[0]
         return self.prices[GP_number]
 
 
