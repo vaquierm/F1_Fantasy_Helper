@@ -471,7 +471,7 @@ def __get_best_team_next_GP(current_team: FantasyTeam, expectation: bool = False
     else:
         raise Exception("No teams can satisfy the conditions")
 
-    return FantasyTeam(optimal_team, optimal_drivers, current_team.get_budget_at_GP(), GP_number, sub_count)
+    return FantasyTeam(optimal_team, optimal_drivers, current_team.get_budget_at_GP(), GP_number, sub_count if GP_number != 0 else 0)
 
 
 def get_best_team_for_GP(budget, GP_number: int, expectation: bool = False, include: list = [], exclude: list = []):
