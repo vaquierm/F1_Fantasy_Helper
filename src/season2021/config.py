@@ -1,204 +1,204 @@
 from src.season2021.variable import Team, Driver
 
-GPs = ["Bahrain", "Italy"]
+GPs = ["Bahrain", "Imola", "Portugal", "Spain", "Monaco", "Azerbaijan", "Canada", "France", "Austria", "Great Britain", "Hungary", "Belgium", "Netherlands", "Monza", "Singapore", "Japan", "United States", "Mexico", "Brazil", "Australia", "Saudi Arabia", "Abu Dhabi"]
 
 # -------------- Mercedes --------------
 team1_driver1 = Driver(name="Hamilton",
                        start_point_expectation=40.82,
-                       prices=[33.5, 33.5],
-                       points=[39],
-                       race_positions=[1],
-                       qualy_positions=[1])
+                       prices=[33.5],
+                       points=[],
+                       race_positions=[],
+                       qualy_positions=[])
 team1_driver2 = Driver(name="Bottas",
                        start_point_expectation=25.59,
-                       prices=[23.6, 23],
-                       points=[23],
-                       race_positions=[2],
-                       qualy_positions=[2])
+                       prices=[23.6],
+                       points=[],
+                       race_positions=[],
+                       qualy_positions=[])
 team1 = Team(name="Mercedes",
              start_point_expectation=59.6,
-             prices=[38.0, 38.1],
-             points=[60],
+             prices=[38.0],
+             points=[],
              driver1=team1_driver1,
              driver2=team1_driver2)
 
 # -------------- Red Bull --------------
 team2_driver1 = Driver(name="Verstappen",
                        start_point_expectation=26.88,
-                       prices=[24.8, 24.9],
-                       points=[25],
-                       race_positions=[3],
-                       qualy_positions=[3])
+                       prices=[24.8],
+                       points=[],
+                       race_positions=[],
+                       qualy_positions=[])
 team2_driver2 = Driver(name="Perez",
                        start_point_expectation=21.5,
-                       prices=[18.4, 18.5],
-                       points=[20],
-                       race_positions=[4],
-                       qualy_positions=[4])
+                       prices=[18.4],
+                       points=[],
+                       race_positions=[],
+                       qualy_positions=[])
 team2 = Team(name="Red Bull",
              start_point_expectation=48.0,
-             prices=[25.9, 25.9],
-             points=[48],
+             prices=[25.9],
+             points=[],
              driver1=team2_driver1,
              driver2=team2_driver2)
 
 # -------------- McLaren --------------
 team3_driver1 = Driver(name="Riccardo",
                        start_point_expectation=21.41,
-                       prices=[17.3, 17.3],
-                       points=[19],
-                       race_positions=[20],
-                       qualy_positions=[20])
+                       prices=[17.3],
+                       points=[],
+                       race_positions=[],
+                       qualy_positions=[])
 team3_driver2 = Driver(name="Norris",
                        start_point_expectation=17.71,
-                       prices=[13.1, 13],
-                       points=[12],
-                       race_positions=[5],
-                       qualy_positions=[5])
+                       prices=[13.1],
+                       points=[],
+                       race_positions=[],
+                       qualy_positions=[])
 team3 = Team(name="McLaren",
              start_point_expectation=30.4,
-             prices=[18.9, 19],
-             points=[13],
+             prices=[18.9],
+             points=[],
              driver1=team3_driver1,
              driver2=team3_driver2)
 
 # -------------- Ferrari --------------
 team4_driver1 = Driver(name="Leclerc",
                        start_point_expectation=14.0,
-                       prices=[16.8, 17],
-                       points=[15],
-                       race_positions=[6],
-                       qualy_positions=[6])
+                       prices=[16.8],
+                       points=[],
+                       race_positions=[],
+                       qualy_positions=[])
 team4_driver2 = Driver(name="Sainz",
                        start_point_expectation=12.0,
-                       prices=[14.4, 14],
-                       points=[13],
-                       race_positions=[7],
-                       qualy_positions=[7])
+                       prices=[14.4],
+                       points=[],
+                       race_positions=[],
+                       qualy_positions=[])
 team4 = Team(name="Ferrari",
              start_point_expectation=21.5,
-             prices=[18.1, 18],
-             points=[20],
+             prices=[18.1],
+             points=[],
              driver1=team4_driver1,
              driver2=team4_driver2)
 
 # -------------- Aston Martin --------------
 team5_driver1 = Driver(name="Vettel",
                        start_point_expectation=10,
-                       prices=[16.2, 16],
-                       points=[13],
-                       race_positions=[8],
-                       qualy_positions=[8])
+                       prices=[16.2],
+                       points=[],
+                       race_positions=[],
+                       qualy_positions=[])
 team5_driver2 = Driver(name="Stroll",
                        start_point_expectation=10.53,
-                       prices=[13.9, 14],
-                       points=[13],
-                       race_positions=[9],
-                       qualy_positions=[9])
+                       prices=[13.9],
+                       points=[],
+                       race_positions=[],
+                       qualy_positions=[])
 team5 = Team(name="Aston Martin",
              start_point_expectation=28.9,
-             prices=[17.6, 18],
-             points=[27],
+             prices=[17.6],
+             points=[],
              driver1=team5_driver1,
              driver2=team5_driver2)
 
 # -------------- Alpine --------------
 team6_driver1 = Driver(name="Alonso",
                        start_point_expectation=13.0,
-                       prices=[15.6, 16],
-                       points=[12],
-                       race_positions=[10],
-                       qualy_positions=[10])
+                       prices=[15.6],
+                       points=[],
+                       race_positions=[],
+                       qualy_positions=[])
 team6_driver2 = Driver(name="Ocon",
                        start_point_expectation=8.76,
-                       prices=[10.10, 10],
-                       points=[5],
-                       race_positions=[11],
-                       qualy_positions=[11])
+                       prices=[10.10],
+                       points=[],
+                       race_positions=[],
+                       qualy_positions=[])
 team6 = Team(name="Alpine",
              start_point_expectation=28.1,
-             prices=[15.4, 15],
-             points=[25],
+             prices=[15.4],
+             points=[],
              driver1=team6_driver1,
              driver2=team6_driver2)
 
 # -------------- Alpha Tauri --------------
 team7_driver1 = Driver(name="Gasly",
                        start_point_expectation=11.3,
-                       prices=[11.7, 12],
-                       points=[11],
-                       race_positions=[12],
-                       qualy_positions=[12])
+                       prices=[11.7],
+                       points=[],
+                       race_positions=[],
+                       qualy_positions=[])
 team7_driver2 = Driver(name="Tsunoda",
                        start_point_expectation=9.0,
-                       prices=[8.8, 9],
-                       points=[2],
-                       race_positions=[13],
-                       qualy_positions=[13])
+                       prices=[8.8],
+                       points=[],
+                       race_positions=[],
+                       qualy_positions=[])
 team7 = Team(name="Alpha Tauri",
              start_point_expectation=20.9,
-             prices=[12.7, 13],
-             points=[21],
+             prices=[12.7],
+             points=[],
              driver1=team7_driver1,
              driver2=team7_driver2)
 
 # -------------- Alfa Romeo --------------
 team8_driver1 = Driver(name="Raikkonen",
                        start_point_expectation=10.53,
-                       prices=[9.6, 10],
-                       points=[13],
-                       race_positions=[14],
-                       qualy_positions=[14])
+                       prices=[9.6],
+                       points=[],
+                       race_positions=[],
+                       qualy_positions=[])
 team8_driver2 = Driver(name="Giovinazzi",
                        start_point_expectation=6.06,
-                       prices=[7.9, 8],
-                       points=[3],
-                       race_positions=[15],
-                       qualy_positions=[15])
+                       prices=[7.9],
+                       points=[],
+                       race_positions=[],
+                       qualy_positions=[])
 team8 = Team(name="Alfa Romeo",
              start_point_expectation=15.1,
-             prices=[8.9, 9],
-             points=[11],
+             prices=[8.9],
+             points=[],
              driver1=team8_driver1,
              driver2=team8_driver2)
 
 # -------------- Williams --------------
 team9_driver1 = Driver(name="Latifi",
                        start_point_expectation=4.71,
-                       prices=[6.5, 6.5],
-                       points=[2],
-                       race_positions=[16],
-                       qualy_positions=[16])
+                       prices=[6.5],
+                       points=[],
+                       race_positions=[],
+                       qualy_positions=[])
 team9_driver2 = Driver(name="Russel",
                        start_point_expectation=4.53,
-                       prices=[6.2, 6],
-                       points=[5],
-                       race_positions=[17],
-                       qualy_positions=[17])
+                       prices=[6.2],
+                       points=[],
+                       race_positions=[],
+                       qualy_positions=[])
 team9 = Team(name="Williams",
              start_point_expectation=10.4,
-             prices=[6.3, 6.4],
-             points=[4],
+             prices=[6.3],
+             points=[],
              driver1=team9_driver1,
              driver2=team9_driver2)
 
 # -------------- Haas --------------
 team10_driver1 = Driver(name="Schumacher",
                         start_point_expectation=4.0,
-                        prices=[5.8, 6],
-                        points=[5],
-                        race_positions=[18],
-                        qualy_positions=[18])
+                        prices=[5.8],
+                        points=[],
+                        race_positions=[],
+                        qualy_positions=[])
 team10_driver2 = Driver(name="Mazepin",
                         start_point_expectation=4.0,
-                        prices=[5.5, 5.5],
-                        points=[2],
-                        race_positions=[19],
-                        qualy_positions=[19])
+                        prices=[5.5],
+                        points=[],
+                        race_positions=[],
+                        qualy_positions=[])
 team10 = Team(name="Haas",
               start_point_expectation=9.6,
-              prices=[6.1, 6],
-              points=[7],
+              prices=[6.1],
+              points=[],
               driver1=team10_driver1,
               driver2=team10_driver2)
 
@@ -243,6 +243,7 @@ team_map = {
 info = {
     "N_GP": -1
 }
+
 
 def check_missing_data():
     import numpy as np

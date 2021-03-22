@@ -14,7 +14,7 @@ class FantasyTeam:
         self.GP_number = GP_number
         self.subs = subs
 
-        if self.get_price_pre_GP() > budget:
+        if round(self.get_price_pre_GP(), 1) > round(budget, 1):
             raise Exception("You cannot afford this team")
 
         cash = budget - self.get_price_pre_GP()
