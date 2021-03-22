@@ -52,7 +52,7 @@ team3_driver1 = Driver(name="Riccardo",
 team3_driver2 = Driver(name="Norris",
                        start_point_expectation=17.71,
                        prices=[13.1, 13],
-                       points=[11],
+                       points=[12],
                        race_positions=[5],
                        qualy_positions=[5])
 team3 = Team(name="McLaren",
@@ -202,6 +202,8 @@ team10 = Team(name="Haas",
               driver1=team10_driver1,
               driver2=team10_driver2)
 
+# ---------------------------------------------------------------------------------------------------- #
+
 driver_map = {
     team1_driver1.name: team1_driver1,
     team1_driver2.name: team1_driver2,
@@ -237,3 +239,36 @@ team_map = {
     team9.name: team9,
     team10.name: team10,
 }
+
+info = {
+    "N_GP": -1
+}
+
+def check_missing_data():
+    import numpy as np
+    teams = []
+    for team_name in team_map:
+        teams.append(team_map[team_name])
+    drivers = []
+    for driver_name in driver_map:
+        drivers.append(driver_map[driver_name])
+
+    team_points_N = np.array(list(map(lambda team: len(team.points), teams)))
+    driver_points_N = np.array(list(map(lambda driver: len(driver.points), drivers)))
+
+    N_GP = max(np.max(team_points_N), np.max(driver_points_N))
+    info["N_GP"] = N_GP
+    missing = False
+    for i in range(len(teams)):
+        if team_points_N[i] < N_GP:
+            missing = True
+            print("Missing data for team: " + teams[i].name)
+    for i in range(len(drivers)):
+        if driver_points_N[i] < N_GP:
+            missing = True
+            print("Missing data for driver: " + drivers[i].name)
+    if missing:
+        raise Exception("Missing data")
+
+
+check_missing_data()

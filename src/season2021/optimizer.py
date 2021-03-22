@@ -1,5 +1,5 @@
 from src.season2021.config import *
-from src.season2021.variable import Team, Driver
+from src.season2021.variable import Team
 from ortools.linear_solver import pywraplp
 import numpy as np
 
@@ -46,7 +46,8 @@ class FantasyTeam:
         team_str += "\n" + indent_str + "Total Budget At GP: " + str(round(self.budget_at_GP, 1))
         team_str += "\n" + indent_str + "Total Expected Points: " + str(round(self.get_expected_points(), 2)) + " with turbo-driver " + self.best_expected_turbo_driver().name
         if self.GP_number < self.team.N_GP:
-            team_str += "\n" + indent_str + "Total Actual Points: " + str(round(self.get_points(), 2)) + " with turbo-driver " + self.best_turbo_driver().name
+            team_str += "\n" + indent_str + "Total Actual Points: " + str(round(self.get_points(use_best_expected_turbo_driver=False), 2)) + " with best turbo-driver " + self.best_turbo_driver().name
+            team_str += "\n" + indent_str + "Total Actual Points: " + str(round(self.get_points(use_best_expected_turbo_driver=True), 2)) + " with best expected turbo-driver " + self.best_expected_turbo_driver().name
 
         return team_str
 
@@ -68,9 +69,9 @@ class FantasyTeam:
                 turbo_driver = driver
         return turbo_driver
 
-    def get_points(self):
+    def get_points(self, use_best_expected_turbo_driver: bool = False):
         points = self.team.get_points(self.GP_number)
-        turbo_driver = self.best_turbo_driver()
+        turbo_driver = self.best_expected_turbo_driver() if use_best_expected_turbo_driver else self.best_turbo_driver()
         for driver in self.drivers:
             if driver == turbo_driver:
                 points += driver.get_points(self.GP_number) * 2
@@ -118,6 +119,35 @@ class FantasyTeam:
         return self.budget_pre_GP
 
 
+class FantasyTeamSequence:
+    def __init__(self, start_team: FantasyTeam):
+        self.team_sequence = [start_team]
+
+    def add_team(self, next_team: FantasyTeam):
+        self.team_sequence.append(next_team)
+
+    def get_total_points(self, use_best_expected_turbo_driver: bool = False):
+        total = 0
+        for team in self.team_sequence:
+            total += team.get_points(use_best_expected_turbo_driver=use_best_expected_turbo_driver)
+        return total
+
+    def get_total_expected_points(self):
+        total = 0
+        for team in self.team_sequence:
+            total += team.get_expected_points()
+        return total
+
+    def to_string(self):
+        team_str = ""
+        for team in self.team_sequence:
+            team_str += team.to_string() + "\n"
+        team_str += "\nTotal Expected Cumulative Points: " + str(round(self.get_total_expected_points(), 2))
+        team_str += "\nTotal Actual Cumulative Points: " + str(round(self.get_total_points(use_best_expected_turbo_driver=False), 2)) + " with best turbo-driver"
+        team_str += "\nTotal Actual Cumulative Points: " + str(round(self.get_total_points(use_best_expected_turbo_driver=True), 2)) + " with best expected turbo-driver"
+        return team_str
+
+
 def get_potential_best_teams_next_GP(current_team: FantasyTeam, include: list = [], exclude: list = []):
     if len(include) == 0 and len(exclude) == 0:
         potential_teams = [FantasyTeam(current_team.team, current_team.drivers, current_team.get_budget_at_GP(), current_team.GP_number + 1, 0)]
@@ -143,6 +173,15 @@ def get_potential_best_teams_next_GP(current_team: FantasyTeam, include: list = 
             potential_teams_keep.append(potential_teams[i])
 
     return potential_teams_keep
+
+
+def follow_the_AI(starting_team: FantasyTeam):
+    team_sequence = FantasyTeamSequence(starting_team)
+    last_team = starting_team
+    for i in range(info["N_GP"] - 1):
+        last_team = __get_best_team_next_GP(current_team=last_team, expectation=True)
+        team_sequence.add_team(last_team)
+    return team_sequence
 
 
 def get_best_teams_next_GP(current_team: FantasyTeam, include: list = [], exclude: list = []):
