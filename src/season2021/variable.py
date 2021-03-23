@@ -114,7 +114,3 @@ class Team(Variable):
         average_race_position = (driver1.race_positions + driver2.race_positions) / 2
         average_qualy_position = (driver1.qualy_positions + driver2.qualy_positions) / 2
         super(Team, self).__init__(name, start_point_expectation, prices, points, average_race_position, top10_race, average_qualy_position, top10_qualy, 3)
-
-
-if __name__ == '__main__':
-    a = Variable("Vettel", 20, prices=[20.4, 20.5, 20.7, 20.7, 20, 20, 20], points=[22, 13, 20, 21, 30, 14], qualy_positions=[5, 4, 6, 10, 3, 5], race_positions=[5, 3, 8, 9, 12, 8], streak_length=5)
