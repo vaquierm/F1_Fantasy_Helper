@@ -271,5 +271,8 @@ def check_missing_data():
     if missing:
         raise Exception("Missing data")
 
+    if N_GP > len(GPs):
+        raise Exception("Missing GP names")
+
 
 check_missing_data()

@@ -175,6 +175,25 @@ def get_potential_best_teams_next_GP(current_team: FantasyTeam, include: list = 
     return potential_teams_keep
 
 
+def get_historical_best_team_sequence():
+    pass
+
+
+def get_best_starter_teams(expectation: bool):
+    best_starter_teams = []
+    best_team = get_best_team_for_GP(budget=100, GP_number=0, expectation=expectation)
+    best_starter_teams.append(best_team)
+    team = get_best_team_for_GP(budget=100, GP_number=0, expectation=expectation, exclude=[best_team.team.name])
+    if team.get_team_hash() != best_team.get_team_hash():
+        best_starter_teams.append(team)
+    for driver in best_team.drivers:
+        team = get_best_team_for_GP(budget=100, GP_number=0, expectation=expectation, exclude=[driver.name])
+        team_hashes = list(map(lambda t: t.get_team_hash(), best_starter_teams))
+        if team.get_team_hash() not in team_hashes:
+            best_starter_teams.append(team)
+    return sorted(best_starter_teams, key=lambda t: -(t.get_expected_points() if expectation else t.get_points()))
+
+
 def follow_the_AI(starting_team: FantasyTeam):
     team_sequence = FantasyTeamSequence(starting_team)
     last_team = starting_team
