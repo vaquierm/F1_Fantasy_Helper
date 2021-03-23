@@ -176,7 +176,32 @@ def get_potential_best_teams_next_GP(current_team: FantasyTeam, include: list = 
 
 
 def get_historical_best_team_sequence():
-    pass
+    starting_teams = get_best_starter_teams(expectation=False)
+    potential_sequences = []
+    cache = {}
+    for starting_team in starting_teams:
+        potential_sequences.append(get_historical_best_team_sequence_after(starting_team, cache))
+    potential_sequences = sorted(potential_sequences, key=lambda seq: seq.get_total_points())
+    return potential_sequences[0]
+
+
+def get_historical_best_team_sequence_after(team: FantasyTeam, cache):
+    best_teams = get_best_teams_next_GP(current_team=team)
+    best_sequence = FantasyTeamSequence(team)
+
+    if team.GP_number == info["N_GP"] - 2:
+        # Final race next. Just maximize points.
+        best_teams = sorted(best_teams, key=lambda t: t.get_points())
+        best_sequence.add_team(best_teams[0])
+        return best_sequence
+
+    potential_sequences = []
+    for t in best_teams:
+        potential_sequences.append(get_historical_best_team_sequence_after(t, cache))
+    potential_sequences = sorted(potential_sequences, key=lambda seq: seq.get_total_points())
+    for t in potential_sequences[0].team_sequence:
+        best_sequence.add_team(t)
+    return best_sequence
 
 
 def get_best_starter_teams(expectation: bool):
@@ -206,11 +231,17 @@ def follow_the_AI(starting_team: FantasyTeam):
 def get_best_teams_next_GP(current_team: FantasyTeam, include: list = [], exclude: list = []):
     if len(include) == 0 and len(exclude) == 0:
         potential_teams = [FantasyTeam(current_team.team, current_team.drivers, current_team.get_budget_at_GP(), current_team.GP_number + 1, 0)]
+        potential_teams_hashes = potential_teams[0].get_team_hash()
     else:
         potential_teams = []
+        potential_teams_hashes = []
     for i in range(1 if len(include) == 0 and len(exclude) == 0 else 0, 7):
         try:
-            potential_teams.append(__get_best_team_next_GP(current_team, False, i, include, exclude))
+            potential_team = __get_best_team_next_GP(current_team, False, i, include, exclude)
+            potential_team_hash = potential_team.get_team_hash()
+            if potential_team_hash not in potential_teams_hashes:
+                potential_teams.append(potential_team)
+                potential_teams_hashes.append(potential_team_hash)
         except:
             pass
 
