@@ -55,7 +55,7 @@ class FantasyTeam:
         max_points = 0
         turbo_driver = None
         for driver in self.drivers:
-            if driver.get_price(self.GP_number) <= 20 and driver.get_expected_points(self.GP_number) > max_points:
+            if driver.get_price(self.GP_number) <= 20 and driver.get_points(self.GP_number) > max_points:
                 max_points = driver.get_points(self.GP_number)
                 turbo_driver = driver
         return turbo_driver
