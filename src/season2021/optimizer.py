@@ -35,7 +35,7 @@ class FantasyTeam:
             team_str += "\n" + indent_str + "\tActual Points: " + str(round(self.team.get_points(self.GP_number), 2))
         for i in range(len(self.drivers)):
             team_str += "\n" + indent_str + "Driver " + str(i + 1) + ": " + self.drivers[i].name
-            team_str += "\n" + indent_str + "\tPrice: " + str(self.drivers[i].get_price(self.GP_number))
+            team_str += "\n" + indent_str + "\tPrice: " + str(round(self.drivers[i].get_price(self.GP_number), 1))
             team_str += "\n" + indent_str + "\tExpected Points: " + str(round(self.drivers[i].get_expected_points(self.GP_number), 2))
             if self.GP_number < self.team.N_GP:
                 team_str += "\n" + indent_str + "\tActual Points: " + str(round(self.drivers[i].get_points(self.GP_number), 2))

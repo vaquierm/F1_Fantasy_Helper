@@ -28,6 +28,17 @@ class Variable:
         self.points = points_gen.copy()
         self.prices = np.round(np.random.normal(prices[0], 0.4, races + 1), 1)
         self.prices[0] = prices[0]
+        for i in range(1, self.prices.shape[0]):
+            rand = np.random.random()
+            sign = -1 if points_gen[i-1] < start_point_expectation else 1
+            if rand < 0.1:
+                self.prices[i] = self.prices[i-1] + (0.3 * sign)
+            elif rand < 0.2:
+                self.prices[i] = self.prices[i-1] + (0.2 * sign)
+            elif rand < 0.3:
+                self.prices[i] = self.prices[i-1] + (0.1 * sign)
+            else:
+                self.prices[i] = self.prices[i-1]
         self.race_positions = np.round(np.random.uniform(1, 20, races))
         self.qualy_positions = np.round(np.random.uniform(1, 20, races))
         top10_race = np.zeros(races)
