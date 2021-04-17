@@ -9,7 +9,7 @@ if __name__ == '__main__':
     # Expectation or actual results
     expectation = False
     # Names of drivers and constructors to absolutely include/exclude
-    include = []
+    include = ["Red Bull", "Latifi", "Perez", "Tsunoda"]
     exclude = []
 
     best_team = get_best_team_for_GP(budget=budget, GP_number=GPs.index(GP), expectation=expectation, include=include, exclude=exclude)
