@@ -15,6 +15,8 @@ class Variable:
         :param streak_length:
         """
         self.name = name
+        if len(prices) == len(points):
+            prices.append(prices[-1])
         self.prices = np.array(prices)
         self.points = np.array(points)
         self.race_positions = np.array(race_positions)
@@ -22,18 +24,29 @@ class Variable:
         self.streak_length = streak_length
 
         # TODO: Comment out later
-        from src.season2021.config import GPs
-        races = len(GPs)
-        points_gen = np.round(np.random.normal(start_point_expectation, 10 * np.random.random(), races))
-        self.points = points_gen.copy()
-        self.prices = np.round(np.random.normal(prices[0], 0.4, races + 1), 1)
-        self.prices[0] = prices[0]
-        self.race_positions = np.round(np.random.uniform(1, 20, races))
-        self.qualy_positions = np.round(np.random.uniform(1, 20, races))
-        top10_race = np.zeros(races)
-        top10_race[np.array(self.race_positions) >= 10] = 1
-        top10_qualy = np.zeros(races)
-        top10_qualy[np.array(self.qualy_positions) >= 10] = 1
+        # from src.season2021.config import GPs
+        # races = len(GPs)
+        # points_gen = np.round(np.random.normal(start_point_expectation, 10 * np.random.random(), races))
+        # self.points = points_gen.copy()
+        # self.prices = np.round(np.random.normal(prices[0], 0.4, races + 1), 1)
+        # self.prices[0] = prices[0]
+        # for i in range(1, self.prices.shape[0]):
+        #     rand = np.random.random()
+        #     sign = -1 if points_gen[i-1] < start_point_expectation else 1
+        #     if rand < 0.1:
+        #         self.prices[i] = self.prices[i-1] + (0.3 * sign)
+        #     elif rand < 0.2:
+        #         self.prices[i] = self.prices[i-1] + (0.2 * sign)
+        #     elif rand < 0.3:
+        #         self.prices[i] = self.prices[i-1] + (0.1 * sign)
+        #     else:
+        #         self.prices[i] = self.prices[i-1]
+        # self.race_positions = np.round(np.random.uniform(1, 20, races))
+        # self.qualy_positions = np.round(np.random.uniform(1, 20, races))
+        # top10_race = np.zeros(races)
+        # top10_race[np.array(self.race_positions) >= 10] = 1
+        # top10_qualy = np.zeros(races)
+        # top10_qualy[np.array(self.qualy_positions) >= 10] = 1
         #
 
         if not (len(self.prices) - 1 == len(self.points) == len(self.race_positions) == len(self.qualy_positions)):
@@ -74,7 +87,7 @@ class Variable:
 
             self.expected_points[i+1] = race_i_expected_points
 
-        self.points = np.array(points_gen)
+        self.points = np.array(points)
 
     def get_points(self, GP_number):
         if GP_number >= self.N_GP:
