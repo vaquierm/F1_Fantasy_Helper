@@ -23,32 +23,6 @@ class Variable:
         self.qualy_positions = np.array(qualy_positions)
         self.streak_length = streak_length
 
-        # TODO: Comment out later
-        # from src.season2021.config import GPs
-        # races = len(GPs)
-        # points_gen = np.round(np.random.normal(start_point_expectation, 10 * np.random.random(), races))
-        # self.points = points_gen.copy()
-        # self.prices = np.round(np.random.normal(prices[0], 0.4, races + 1), 1)
-        # self.prices[0] = prices[0]
-        # for i in range(1, self.prices.shape[0]):
-        #     rand = np.random.random()
-        #     sign = -1 if points_gen[i-1] < start_point_expectation else 1
-        #     if rand < 0.1:
-        #         self.prices[i] = self.prices[i-1] + (0.3 * sign)
-        #     elif rand < 0.2:
-        #         self.prices[i] = self.prices[i-1] + (0.2 * sign)
-        #     elif rand < 0.3:
-        #         self.prices[i] = self.prices[i-1] + (0.1 * sign)
-        #     else:
-        #         self.prices[i] = self.prices[i-1]
-        # self.race_positions = np.round(np.random.uniform(1, 20, races))
-        # self.qualy_positions = np.round(np.random.uniform(1, 20, races))
-        # top10_race = np.zeros(races)
-        # top10_race[np.array(self.race_positions) >= 10] = 1
-        # top10_qualy = np.zeros(races)
-        # top10_qualy[np.array(self.qualy_positions) >= 10] = 1
-        #
-
         if not (len(self.prices) - 1 == len(self.points) == len(self.race_positions) == len(self.qualy_positions)):
             raise Exception("Missing data for variable " + name)
 
@@ -60,24 +34,24 @@ class Variable:
         qualy_consecutive = 0
         finish_consecutive = 0
         for i in range(self.N_GP):
-            qualy_steak_prob = ((10 - np.average(self.qualy_positions[:i+1]) + 1) / 5) + (np.average(top10_qualy[:i+1]) / 2)
-            race_steak_prob = ((10 - np.average(self.race_positions[:i+1]) + 1) / 5) + (np.average(top10_race[:i+1]) / 2)
+            qualy_steak_prob = ((10 - np.average(self.qualy_positions[:i+1]) + 1) / 50) + (np.average(top10_qualy[:i+1]) / 2)
+            race_steak_prob = ((10 - np.average(self.race_positions[:i+1]) + 1) / 50) + (np.average(top10_race[:i+1]) / 2)
             race_i_expected_points = 0
             if top10_qualy[i] == 1:
                 qualy_consecutive += 1
-                if qualy_consecutive == self.streak_length:
+                if qualy_consecutive == self.streak_length - 1:
                     race_i_expected_points += 5 * qualy_steak_prob
                     # Remove from the points array to get the raw number of points
                     self.points[i] -= 5
                     qualy_consecutive = 0
             else:
                 qualy_consecutive = 0
-            if top10_race[i] == 10:
+            if top10_race[i] == 1:
                 finish_consecutive += 1
-                if finish_consecutive == self.streak_length:
+                if finish_consecutive == self.streak_length - 1:
                     race_i_expected_points += 10 * race_steak_prob
                     # Remove from the points array to get the raw number of points
-                    self.points -= 10
+                    self.points[i] -= 10
                     finish_consecutive = 0
             else:
                 finish_consecutive = 0
@@ -120,10 +94,10 @@ class Team(Variable):
     def __init__(self, name, start_point_expectation, prices: list, points: list, driver1: Driver, driver2: Driver):
         top10_race = np.zeros(len(points))
         if len(points) > 0:
-            top10_race[np.logical_and(np.array(driver1.race_positions) >= 10, np.array(driver2.race_positions) >= 10)] = 1
+            top10_race[np.logical_and(np.array(driver1.race_positions) <= 10, np.array(driver2.race_positions) <= 10)] = 1
         top10_qualy = np.zeros(len(points))
         if len(points) > 0:
-            top10_qualy[np.logical_and(np.array(driver1.qualy_positions) >= 10, np.array(driver2.qualy_positions) >= 10)] = 1
+            top10_qualy[np.logical_and(np.array(driver1.qualy_positions) <= 10, np.array(driver2.qualy_positions) <= 10)] = 1
         average_race_position = (driver1.race_positions + driver2.race_positions) / 2
         average_qualy_position = (driver1.qualy_positions + driver2.qualy_positions) / 2
         super(Team, self).__init__(name, start_point_expectation, prices, points, average_race_position, top10_race, average_qualy_position, top10_qualy, 3)

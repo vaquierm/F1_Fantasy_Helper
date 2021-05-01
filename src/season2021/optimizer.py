@@ -46,8 +46,8 @@ class FantasyTeam:
         team_str += "\n" + indent_str + "Total Budget At GP: " + str(round(self.budget_at_GP, 1))
         team_str += "\n" + indent_str + "Total Expected Points: " + str(round(self.get_expected_points(), 2)) + " with turbo-driver " + self.best_expected_turbo_driver().name
         if self.GP_number < self.team.N_GP:
-            team_str += "\n" + indent_str + "Total Actual Points: " + str(round(self.get_points(use_best_expected_turbo_driver=False), 2)) + " with best turbo-driver " + self.best_turbo_driver().name
-            team_str += "\n" + indent_str + "Total Actual Points: " + str(round(self.get_points(use_best_expected_turbo_driver=True), 2)) + " with best expected turbo-driver " + self.best_expected_turbo_driver().name
+            team_str += "\n" + indent_str + "Total Actual Points: " + str(round(self.get_points(use_best_expected_turbo_driver=False), 2) - (self.subs - 3) * 10) + " with best turbo-driver " + self.best_turbo_driver().name
+            team_str += "\n" + indent_str + "Total Actual Points: " + str(round(self.get_points(use_best_expected_turbo_driver=True), 2) - (self.subs - 3) * 10) + " with best expected turbo-driver " + self.best_expected_turbo_driver().name
 
         return team_str
 
@@ -260,7 +260,7 @@ def get_best_teams_next_GP(current_team: FantasyTeam, include: list = [], exclud
 
 
 def __get_best_team_next_GP(current_team: FantasyTeam, expectation: bool = False, subs: int = -1, include: list = [], exclude: list = []):
-    solver = pywraplp.Solver.CreateSolver("F1 Fantasy solver", "CBC")
+    solver = pywraplp.Solver.CreateSolver("CBC")
 
     team_hash = current_team.get_team_hash()
 
@@ -564,7 +564,7 @@ def __get_best_team_next_GP(current_team: FantasyTeam, expectation: bool = False
 
 
 def get_best_team_for_GP(budget, GP_number: int, expectation: bool = False, include: list = [], exclude: list = []):
-    solver = pywraplp.Solver.CreateSolver("F1 Fantasy solver", "CBC")
+    solver = pywraplp.Solver.CreateSolver("CBC")
 
     # Declare all model variables
     driver_vars = []

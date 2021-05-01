@@ -5,11 +5,11 @@ if __name__ == '__main__':
     # Your budget at the end of last GP
     budget = 100
     # The target GP
-    GP = "Bahrain"
+    GP = "Imola"
     # Expectation or actual results
     expectation = False
     # Names of drivers and constructors to absolutely include/exclude
-    include = ["Red Bull", "Latifi", "Perez", "Tsunoda"]
+    include = []
     exclude = []
 
     best_team = get_best_team_for_GP(budget=budget, GP_number=GPs.index(GP), expectation=expectation, include=include, exclude=exclude)
