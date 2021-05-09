@@ -3,7 +3,7 @@ from src.season2021.config import GPs, driver_map, team_map
 
 if __name__ == '__main__':
     # Budget at the end of the last GP
-    budget = 104.2
+    budget = 103.2
     # The next GP
     next_GP = "Monaco"
     # Expectation or actual results

@@ -34,13 +34,14 @@ class Variable:
         qualy_consecutive = 0
         finish_consecutive = 0
         for i in range(self.N_GP):
-            qualy_steak_prob = ((10 - np.average(self.qualy_positions[:i+1]) + 1) / 50) + (np.average(top10_qualy[:i+1]) / 2)
-            race_steak_prob = ((10 - np.average(self.race_positions[:i+1]) + 1) / 50) + (np.average(top10_race[:i+1]) / 2)
+            qualy_steak_prob = (((10 - np.average(self.qualy_positions[:i+1]) + 1) / 10) * 0.35) + (np.average(top10_qualy[:i+1]) * 0.65)
+            race_steak_prob = (((10 - np.average(self.race_positions[:i+1]) + 1) / 10) * 0.35) + (np.average(top10_race[:i+1]) * 0.65)
             race_i_expected_points = 0
             if top10_qualy[i] == 1:
                 qualy_consecutive += 1
-                if qualy_consecutive == self.streak_length - 1:
+                if qualy_consecutive == self.streak_length - 1 and qualy_steak_prob > 0:
                     race_i_expected_points += 5 * qualy_steak_prob
+                elif qualy_consecutive == self.streak_length:
                     # Remove from the points array to get the raw number of points
                     self.points[i] -= 5
                     qualy_consecutive = 0
@@ -48,8 +49,9 @@ class Variable:
                 qualy_consecutive = 0
             if top10_race[i] == 1:
                 finish_consecutive += 1
-                if finish_consecutive == self.streak_length - 1:
+                if finish_consecutive == self.streak_length - 1 and race_steak_prob > 0:
                     race_i_expected_points += 10 * race_steak_prob
+                elif finish_consecutive == self.streak_length:
                     # Remove from the points array to get the raw number of points
                     self.points[i] -= 10
                     finish_consecutive = 0
