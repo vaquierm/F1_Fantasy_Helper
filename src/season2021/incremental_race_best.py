@@ -3,9 +3,9 @@ from src.season2021.config import GPs, driver_map, team_map
 
 if __name__ == '__main__':
     # Budget at the end of the last GP
-    budget = 102.3
+    budget = 104.2
     # The next GP
-    next_GP = "Portugal"
+    next_GP = "Monaco"
     # Expectation or actual results
     expectation = True
     # Your team
@@ -13,10 +13,10 @@ if __name__ == '__main__':
     driver1 = "Verstappen"
     driver2 = "Leclerc"
     driver3 = "Norris"
-    driver4 = "Latifi"
-    driver5 = "Tsunoda"
+    driver4 = "Schumacher"
+    driver5 = "Ocon"
     # Names of drivers and constructors to absolutely include/exclude
-    include = ["Redbull", "Leclerc"]
+    include = []
     exclude = []
 
     subs = 1

@@ -84,9 +84,9 @@ class Variable:
 class Driver(Variable):
     def __init__(self, name, start_point_expectation, prices: list, points: list, race_positions: list, qualy_positions: list):
         top10_race = np.zeros(len(race_positions))
-        top10_race[np.array(race_positions) >= 10] = 1
+        top10_race[np.array(race_positions) <= 10] = 1
         top10_qualy = np.zeros(len(qualy_positions))
-        top10_qualy[np.array(qualy_positions) >= 10] = 1
+        top10_qualy[np.array(qualy_positions) <= 10] = 1
         super(Driver, self).__init__(name, start_point_expectation, prices, points, race_positions, top10_race, qualy_positions, top10_qualy, 5)
 
 
