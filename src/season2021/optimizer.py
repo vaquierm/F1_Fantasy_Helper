@@ -186,6 +186,7 @@ def get_historical_best_team_sequence():
 
 
 def get_historical_best_team_sequence_after(team: FantasyTeam, cache):
+    team.subs = 0
     best_teams = get_best_teams_next_GP(current_team=team)
     best_sequence = FantasyTeamSequence(team)
 
@@ -560,7 +561,7 @@ def __get_best_team_next_GP(current_team: FantasyTeam, expectation: bool = False
     else:
         raise Exception("No teams can satisfy the conditions")
 
-    return FantasyTeam(optimal_team, optimal_drivers, current_team.get_budget_at_GP(), GP_number, sub_count if GP_number != 0 else 0)
+    return FantasyTeam(optimal_team, optimal_drivers, current_team.get_budget_at_GP(), GP_number, sub_count + current_team.subs if GP_number != 0 else 0)
 
 
 def get_best_team_for_GP(budget, GP_number: int, expectation: bool = False, include: list = [], exclude: list = []):
