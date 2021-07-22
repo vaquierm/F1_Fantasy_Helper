@@ -5,7 +5,7 @@ if __name__ == '__main__':
     # Budget at the end of the last GP
     budget = 107
     # The next GP
-    next_GP = "Great Britain"
+    next_GP = "Hungary"
     # Expectation or actual results
     expectation = True
     # Your team
@@ -13,10 +13,10 @@ if __name__ == '__main__':
     driver1 = "Verstappen"
     driver2 = "Perez"
     driver3 = "Norris"
-    driver4 = "Gasly"
+    driver4 = "Riccardo"
     driver5 = "Schumacher"
     # Names of drivers and constructors to absolutely include/exclude
-    include = []
+    include = ["McLaren"]
     exclude = []
 
     subs = 0
