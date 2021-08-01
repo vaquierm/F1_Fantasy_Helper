@@ -3,11 +3,11 @@ from src.season2021.config import GPs
 
 if __name__ == '__main__':
     # Your budget at the end of last GP
-    budget = 106
+    budget = 108
     # The target GP
-    GP = "France"
+    GP = "Belgium"
     # Expectation or actual results
-    expectation = False
+    expectation = True
     # Names of drivers and constructors to absolutely include/exclude
     include = []
     exclude = []
